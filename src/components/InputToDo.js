@@ -28,7 +28,7 @@ class InputToDo extends Component {
                     placeholder="Input Something"
                 />
                 <br /> <br />
-                <button onClick={() => { this.props.addTodo(this.state.text) }}>Submit</button>
+                <button onClick={() => { this.props.addTodo(this.state.text); this.setState({ text: '' }) }}>Submit</button>
             </div>
         );
     }
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch)
 }
 
-export default connect(null,mapDispatchToProps)(InputToDo);
+export default connect(null, mapDispatchToProps)(InputToDo);

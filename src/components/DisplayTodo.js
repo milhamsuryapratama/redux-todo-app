@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {DISPLAY_TODO, setVisibilityFilter} from '../actions/actionsCreators';
-import {SHOW_ALL} from '../actions/actionsTypes';
+import React, { Component } from "react";
+import { setVisibilityFilter, deleteTodo } from '../actions/actionsCreators';
+import { SHOW_ALL } from '../actions/actionsTypes';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,9 +10,13 @@ class DisplayTodo extends Component {
     render() {
         return (
             <ul>
-                {this.props.todos.map(todo => (
-                    <li>{todo.text}</li>
-                ))}
+                {this.props.todos.length > 0 ? (
+                    this.props.todos.map(todo => {
+                        return <li key={todo.id}>{todo.text} {' '} <button onClick={() => this.props.deleteTodo(todo.id)}>Hapus</button></li>
+                    })
+                ) : (
+                        <li>Kosong</li>
+                    )}
             </ul>
         )
     }
@@ -29,14 +33,16 @@ const getVisibleTodos = (todos, filter) => {
 }
 
 const mapStateToProps = state => {
-    return {todos: getVisibleTodos(state.todos, state.visibilityFilter),
+    return {
+        todos: getVisibleTodos(state.todos, state.visibilityFilter),
         visibilityFilter: state.visibilityFilter
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
-        setVisibilityFilter
+        setVisibilityFilter,
+        deleteTodo
     }, dispatch)
 }
 
