@@ -8,10 +8,10 @@ export const addTodo = text => ({
     text
 })
 
-// export const setVisibilityFilter = filter => ({
-//     type: SET_VISIBILITY_FILTER,
-//     filter
-// })
+export const setVisibilityFilter = filter => ({
+    type: SET_VISIBILITY_FILTER,
+    filter
+})
 
 export const deleteTodo = id => ({
     type: DELETE_TODO,

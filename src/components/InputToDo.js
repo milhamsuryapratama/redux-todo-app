@@ -26,7 +26,7 @@ class InputToDo extends Component {
                     value={this.state.text}
                     onChange={this.handleChange.bind(this)}
                     placeholder="Input Something" />
-                <ButtonDua onClick={() => { this.props.addTodo(this.state.text); this.setState({ text: '' }) }}>Submit</ButtonDua>
+                <ButtonDua onClick={() => { this.state.text !== "" ? this.props.addTodo(this.state.text) : alert("Isi Dulu Bro"); this.setState({ text: '' }) }}><strong>Submit</strong></ButtonDua>
             </div>
         );
     }
@@ -42,12 +42,14 @@ const InputDua = styled.input`
     width: 250px;
     height: 40px;
     text-align: center;
+    letter-spacing: 4px;
 `;
 
 const ButtonDua = styled.button`
     width: 100px;
-    height: 45px;
+    height: 46px;
     cursor: pointer;
+    letter-spacing: 2px;
 `;
 
 export default connect(null, mapDispatchToProps)(InputToDo);

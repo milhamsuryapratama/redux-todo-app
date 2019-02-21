@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { deleteTodo, editTodo } from '../actions/actionsCreators';
-import { GET_EDITED } from '../actions/actionsTypes';
+import { deleteTodo, editTodo, setVisibilityFilter } from '../actions/actionsCreators';
+import { SHOW_ALL } from '../actions/actionsTypes';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -24,20 +24,27 @@ class DisplayTodo extends Component {
 
 }
 
-// const getVisibleTodos = (todos) => {
-//     return todos;
-// }
+const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+        case SHOW_ALL:
+            return todos;
+        default:
+            return todos
+    }
+};
 
 const mapStateToProps = state => {
     return {
-        todos: state.todos
+        todos: getVisibleTodos(state.todos, state.visibilityFilter),
+        visibilityFilter: state.visibilityFilter
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         deleteTodo,
-        editTodo
+        editTodo,
+        setVisibilityFilter
     }, dispatch)
 }
 
