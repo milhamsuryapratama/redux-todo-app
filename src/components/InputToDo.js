@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { addTodo } from '../actions/actionsCreators';
+import { addTodo, setVisibilityFilter } from '../actions/actionsCreators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+// import { SHOW_ALL, EDITED } from '../actions/actionsTypes';
 
 class InputToDo extends Component {
     constructor(props) {
@@ -12,12 +13,20 @@ class InputToDo extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        nextProps.todos.map(todo => {
+            this.setState({
+                text: todo.text
+            })
+        })
+        console.log(nextProps);
+    }
+
     handleChange(e) {
         this.setState({
             text: e.target.value
         })
     }
-
 
     render() {
         return (
@@ -31,6 +40,20 @@ class InputToDo extends Component {
         );
     }
 }
+
+const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+        default:
+            return todos.filter(todo => todo.edited);
+    }
+};
+
+const mapStateToProps = state => {
+    return {
+        todos: getVisibleTodos(state.todos, state.visibilityFilter),
+        visibilityFilter: state.visibilityFilter
+    };
+};
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
@@ -52,4 +75,4 @@ const ButtonDua = styled.button`
     letter-spacing: 2px;
 `;
 
-export default connect(null, mapDispatchToProps)(InputToDo);
+export default connect(mapStateToProps, mapDispatchToProps)(InputToDo);

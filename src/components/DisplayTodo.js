@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from "react";
-import { deleteTodo, editTodo, setVisibilityFilter } from '../actions/actionsCreators';
-import { SHOW_ALL } from '../actions/actionsTypes';
+import { deleteTodo, setVisibilityFilter, editTodo } from '../actions/actionsCreators';
+import { SHOW_ALL, EDITED } from '../actions/actionsTypes';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 class DisplayTodo extends Component {
+
+    // componentWillReceiveProps(nextProps) {
+    //     console.log(nextProps)
+    // }
 
     render() {
         return (
@@ -13,7 +17,7 @@ class DisplayTodo extends Component {
                 <h2>Jumlah : {this.props.todos.length}</h2>
                 {this.props.todos.length > 0 ? (
                     this.props.todos.map(todos => {
-                        return <div key={todos.id}>{todos.text}  <button onClick={() => this.props.editTodo(todos.id)}>Edit</button> <button onClick={() => this.props.deleteTodo(todos.id)}>Hapus</button></div>
+                        return <div key={todos.id}>{todos.text}  <button onClick={() => this.props.editTodo(todos.id)}>Edit</button> | <button onClick={() => this.props.deleteTodo(todos.id)}>Hapus</button></div>
                     })
                 ) : (
                         <div>Kosong</div>
@@ -28,8 +32,10 @@ const getVisibleTodos = (todos, filter) => {
     switch (filter) {
         case SHOW_ALL:
             return todos;
+        case EDITED:
+            return todos;
         default:
-            return todos
+            throw new Error("Unknown filter: " + filter);
     }
 };
 
@@ -43,8 +49,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         deleteTodo,
-        editTodo,
-        setVisibilityFilter
+        setVisibilityFilter,
+        editTodo
     }, dispatch)
 }
 
