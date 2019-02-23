@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-import { deleteTodo, setVisibilityFilter, editTodo } from '../actions/actionsCreators';
-import { SHOW_ALL, EDITED } from '../actions/actionsTypes';
+import { deleteTodo, setVisibilityFilter, editTodo, toogleTodo } from '../actions/actionsCreators';
+import { SHOW_ALL, EDITED, COMPLETED, ACTIVE } from '../actions/actionsTypes';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -12,12 +12,14 @@ class DisplayTodo extends Component {
     // }
 
     render() {
+        // <button onClick={() => this.props.editTodo(todos.id)}>Edit</button> | <button onClick={() => this.props.setVisibilityFilter(EDITED, todos.id)}>Edit</button>
         return (
             <Fragment>
+                <button onClick={() => this.props.setVisibilityFilter(SHOW_ALL)}>All</button> | <button onClick={() => this.props.setVisibilityFilter(COMPLETED)}>Completed</button> | <button onClick={() => this.props.setVisibilityFilter(ACTIVE)}>Active</button>
                 <h2>Jumlah : {this.props.todos.length}</h2>
                 {this.props.todos.length > 0 ? (
                     this.props.todos.map(todos => {
-                        return <div key={todos.id}>{todos.text}  <button onClick={() => this.props.editTodo(todos.id)}>Edit</button> | <button onClick={() => this.props.deleteTodo(todos.id)}>Hapus</button></div>
+                        return <Fragment><br /><div key={todos.id}>{todos.completed === true ? <strike>{todos.text}</strike> : todos.text}  <button onClick={() => this.props.toogleTodo(todos.id)}>Completed</button> | <button onClick={() => this.props.deleteTodo(todos.id)}>Hapus</button></div></Fragment>
                     })
                 ) : (
                         <div>Kosong</div>
@@ -34,6 +36,10 @@ const getVisibleTodos = (todos, filter) => {
             return todos;
         case EDITED:
             return todos;
+        case COMPLETED:
+            return todos.filter(todo => todo.completed);
+        case ACTIVE:
+            return todos.filter(todo => !todo.completed);
         default:
             throw new Error("Unknown filter: " + filter);
     }
@@ -50,7 +56,8 @@ const mapDispatchToProps = dispatch => {
     return bindActionCreators({
         deleteTodo,
         setVisibilityFilter,
-        editTodo
+        editTodo,
+        toogleTodo
     }, dispatch)
 }
 

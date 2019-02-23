@@ -3,7 +3,7 @@ import { addTodo, setVisibilityFilter } from '../actions/actionsCreators';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-// import { SHOW_ALL, EDITED } from '../actions/actionsTypes';
+import { SHOW_ALL, EDITED } from '../actions/actionsTypes';
 
 class InputToDo extends Component {
     constructor(props) {
@@ -14,11 +14,11 @@ class InputToDo extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        nextProps.todos.map(todo => {
-            this.setState({
-                text: todo.text
-            })
-        })
+        // nextProps.todos.map(todo => {
+        //     this.setState({
+        //         text: todo.text
+        //     })
+        // })
         console.log(nextProps);
     }
 
@@ -43,6 +43,10 @@ class InputToDo extends Component {
 
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
+        case SHOW_ALL:
+            return todos;
+        case EDITED:
+            return todos;
         default:
             return todos.filter(todo => todo.edited);
     }
